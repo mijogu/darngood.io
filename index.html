@@ -153,8 +153,6 @@ section{padding:6rem 2rem}
 .form-status{display:none;margin-top:1rem;padding:12px 16px;border-radius:10px;font-size:14px;text-align:center}
 .form-status.success{background:#EAF3DE;color:#27500A}
 .form-status.error{background:#FCEBEB;color:#791F1F}
-.cf-turnstile{margin-bottom:1rem}
-
 /* FOOTER */
 footer{background:var(--ink);color:rgba(255,255,255,0.4);padding:2rem;text-align:center;font-size:13px}
 footer span{color:var(--rust)}
@@ -171,7 +169,6 @@ footer span{color:var(--rust)}
   .clients-grid{grid-template-columns:1fr}
 }
 </style>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -524,8 +521,6 @@ footer span{color:var(--rust)}
             <textarea id="message" name="message" placeholder="Tell me a bit about what you're working on..." required></textarea>
           </div>
 
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAC9paCnWbH0NwKBj" data-theme="light"></div>
-
           <div class="form-status" id="formStatus"></div>
           <button type="submit" class="form-submit" id="formSubmit">Send message</button>
         </form>
@@ -597,7 +592,6 @@ footer span{color:var(--rust)}
           status.className = 'form-status success';
           status.style.display = 'block';
           form.reset();
-          if (window.turnstile) turnstile.reset();
         } else {
           throw new Error(json.message || 'Submission failed');
         }
