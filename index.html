@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darn Good LLC — WordPress Development & Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F7F3EE;--ink:#1A1612;--rust:#C4512A;--rust-light:#F0DDD4;--rust-dark:#8C3519;
+  --warm-gray:#8A847D;--mid:#E8E2DA;--white:#FDFBF8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.7;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,243,238,0.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--mid);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-0.3px;display:inline-flex;align-items:center;gap:0}
+.nav-logo .brand-good{color:var(--rust)}
+.nav-logo .brand-sep{color:var(--warm-gray);font-weight:300;font-size:18px;margin:0 8px;opacity:0.5}
+.nav-logo .brand-tag-wrap{overflow:hidden;display:inline-block;vertical-align:bottom;max-width:220px}
+.nav-logo .brand-tag{display:inline-block;font-size:14px;font-weight:400;font-style:italic;color:var(--warm-gray);white-space:nowrap;transform:translateY(0);opacity:1;transition:transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s ease}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:14px;color:var(--warm-gray);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{font-size:14px;font-weight:500;background:var(--ink);color:var(--white);padding:8px 20px;border-radius:100px;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--rust)}
+
+/* HERO */
+.hero{min-height:100vh;padding:120px 2rem 80px;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 50% at 70% 40%,rgba(196,81,42,0.08) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(196,81,42,0.05) 0%,transparent 60%)}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:1}
+.hero-tag{display:inline-block;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--rust);border:1px solid rgba(196,81,42,0.3);padding:6px 14px;border-radius:100px;margin-bottom:2rem;animation:fadeUp 0.6s ease both}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;color:var(--ink);animation:fadeUp 0.6s 0.1s ease both;margin-bottom:1.5rem}
+.hero h1 em{color:var(--rust);font-style:normal}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--warm-gray);max-width:560px;line-height:1.7;animation:fadeUp 0.6s 0.2s ease both;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 0.6s 0.3s ease both}
+.btn-primary{background:var(--ink);color:var(--white);padding:14px 28px;border-radius:100px;font-size:15px;font-weight:500;text-decoration:none;transition:all 0.2s;display:inline-block}
+.btn-primary:hover{background:var(--rust);transform:translateY(-1px)}
+.btn-secondary{color:var(--ink);padding:14px 28px;border-radius:100px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(26,22,18,0.2);transition:all 0.2s;display:inline-block}
+.btn-secondary:hover{border-color:var(--ink);transform:translateY(-1px)}
+.hero-stats{display:flex;gap:3rem;margin-top:4rem;animation:fadeUp 0.6s 0.4s ease both;padding-top:3rem;border-top:1px solid var(--mid)}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:var(--ink);line-height:1}
+.stat-num span{color:var(--rust)}
+.stat-label{font-size:13px;color:var(--warm-gray);margin-top:4px}
+
+/* SHARED */
+section{padding:6rem 2rem}
+.section-inner{max-width:1000px;margin:0 auto}
+.section-tag{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--rust);margin-bottom:1rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-1px;line-height:1.15;color:var(--ink);margin-bottom:1rem}
+.section-sub{font-size:1.05rem;color:var(--warm-gray);max-width:560px;line-height:1.7;margin-bottom:3rem}
+
+/* SERVICES */
+.services{background:var(--white)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5px;border:1.5px solid var(--mid);border-radius:16px;overflow:hidden;margin-bottom:2rem}
+.service-card{background:var(--white);padding:2rem 1.75rem;transition:background 0.2s}
+.service-card:hover{background:var(--cream)}
+.service-icon{width:40px;height:40px;border-radius:10px;background:var(--rust-light);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.service-icon svg{width:20px;height:20px}
+.service-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem}
+.service-card p{font-size:14px;color:var(--warm-gray);line-height:1.6}
+.python-banner{background:var(--ink);border-radius:16px;padding:2rem 2.5rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.python-banner-tag{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(196,81,42,0.9);margin-bottom:0.5rem}
+.python-banner h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:0.5rem}
+.python-banner p{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;max-width:520px}
+.python-banner-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.75rem;flex-shrink:0}
+.product-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:8px 16px;font-size:13px;color:rgba(255,255,255,0.8);white-space:nowrap}
+.product-pill-dot{width:7px;height:7px;border-radius:50%;background:#EF9F27;flex-shrink:0}
+.product-pill-dot.green{background:#97C459}
+.banner-cta{font-size:13px;font-weight:500;color:var(--rust-light);text-decoration:none;opacity:0.85;transition:opacity 0.2s}
+.banner-cta:hover{opacity:1}
+
+/* CLIENTS */
+.clients{background:var(--ink)}
+.clients .section-tag{color:rgba(196,81,42,0.85)}
+.clients .section-title{color:var(--white)}
+.clients .section-sub{color:rgba(255,255,255,0.45)}
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;border:1px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden}
+.client-card{background:rgba(255,255,255,0.03);padding:1.5rem 1.75rem;transition:background 0.2s;text-decoration:none;display:block}
+.client-card:hover{background:rgba(255,255,255,0.07)}
+.client-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;line-height:1.2}
+.client-type{font-size:12px;color:rgba(255,255,255,0.35)}
+.client-tag{display:inline-block;font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:rgba(196,81,42,0.8);background:rgba(196,81,42,0.12);padding:3px 9px;border-radius:100px;margin-top:8px}
+.clients-note{font-size:13px;color:rgba(255,255,255,0.3);text-align:center;font-style:italic;margin-top:2.5rem}
+
+/* ABOUT */
+.about{background:var(--cream)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-body{font-size:1rem;color:rgba(26,22,18,0.75);line-height:1.8}
+.about-body p+p{margin-top:1rem}
+.about-highlight{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:400;font-style:italic;color:var(--ink);border-left:3px solid var(--rust);padding-left:1.5rem;margin:2rem 0;line-height:1.5;border-radius:0}
+.about-right{display:grid;gap:1rem}
+.about-card{border:1px solid var(--mid);border-radius:12px;padding:1.5rem;background:var(--white)}
+.about-card-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--rust);line-height:1}
+.about-card-label{font-size:13px;color:var(--warm-gray);margin-top:4px}
+
+/* APPROACH */
+.approach{background:var(--white)}
+.approach-list{display:grid;gap:0}
+.approach-item{display:grid;grid-template-columns:64px 1fr;gap:1.5rem;align-items:start;padding:2rem 0;border-bottom:1px solid var(--mid)}
+.approach-item:first-child{border-top:1px solid var(--mid)}
+.approach-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--rust);padding-top:4px}
+.approach-content h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:0.4rem}
+.approach-content p{font-size:14px;color:var(--warm-gray);line-height:1.6}
+
+/* BEYOND */
+.beyond{background:var(--cream)}
+.beyond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.beyond-card{background:var(--white);border:1px solid var(--mid);border-radius:16px;overflow:hidden;transition:transform 0.2s,border-color 0.2s}
+.beyond-card:hover{transform:translateY(-3px);border-color:rgba(196,81,42,0.3)}
+.beyond-card-header{padding:1.75rem 1.75rem 0}
+.beyond-badge{display:inline-block;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--rust-dark);background:var(--rust-light);padding:4px 10px;border-radius:100px;margin-bottom:1rem}
+.beyond-card h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem}
+.beyond-card p{font-size:14px;color:var(--warm-gray);line-height:1.6;padding:0 1.75rem}
+.beyond-card-footer{padding:1.25rem 1.75rem 1.75rem;margin-top:1.25rem;border-top:1px solid var(--mid)}
+.beyond-link{font-size:13px;font-weight:500;color:var(--rust);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:gap 0.2s}
+.beyond-link:hover{gap:10px}
+.apps-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem}
+.app-card{background:var(--white);border:1px solid var(--mid);border-radius:16px;padding:1.75rem;transition:transform 0.2s,border-color 0.2s}
+.app-card:hover{transform:translateY(-3px);border-color:rgba(196,81,42,0.3)}
+.app-icon{width:48px;height:48px;border-radius:12px;background:var(--rust-light);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.app-icon svg{width:24px;height:24px}
+.app-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:0.4rem}
+.app-card p{font-size:14px;color:var(--warm-gray);line-height:1.6}
+.app-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--warm-gray);margin-top:12px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#3B6D11;display:inline-block}
+.status-dot.soon{background:#BA7517}
+
+/* CONTACT */
+.contact{background:var(--rust)}
+.contact .section-tag{color:rgba(255,255,255,0.5)}
+.contact .section-title{color:var(--white)}
+.contact .section-sub{color:rgba(255,255,255,0.7);max-width:440px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.contact-detail{display:flex;flex-direction:column;gap:1.25rem;margin-top:2rem}
+.contact-item{display:flex;align-items:center;gap:12px}
+.contact-item-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-item-icon svg{width:16px;height:16px}
+.contact-item-text{font-size:14px;color:rgba(255,255,255,0.7)}
+.contact-item-text strong{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,0.4);margin-bottom:2px;letter-spacing:0.5px;text-transform:uppercase}
+.contact-form{background:var(--white);border-radius:16px;padding:2.5rem}
+.form-row{margin-bottom:1.25rem}
+.form-row label{display:block;font-size:11px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;color:var(--warm-gray);margin-bottom:6px}
+.form-row input,.form-row textarea{width:100%;background:var(--cream);border:1.5px solid var(--mid);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color 0.2s;resize:none}
+.form-row input:focus,.form-row textarea:focus{border-color:var(--rust)}
+.form-row textarea{height:120px}
+.form-hp{display:none}
+.form-submit{width:100%;background:var(--ink);color:var(--white);border:none;border-radius:100px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background 0.2s;margin-top:0.5rem}
+.form-submit:hover{background:var(--rust)}
+.form-submit:disabled{opacity:0.6;cursor:not-allowed}
+.form-status{display:none;margin-top:1rem;padding:12px 16px;border-radius:10px;font-size:14px;text-align:center}
+.form-status.success{background:#EAF3DE;color:#27500A}
+.form-status.error{background:#FCEBEB;color:#791F1F}
+.cf-turnstile{margin-bottom:1rem}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,0.4);padding:2rem;text-align:center;font-size:13px}
+footer span{color:var(--rust)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:800px){
+  .about-grid,.beyond-grid,.contact-grid{grid-template-columns:1fr}
+  .apps-row{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+  .nav-links{display:none}
+  .python-banner{grid-template-columns:1fr}
+  .python-banner-right{align-items:flex-start}
+  .clients-grid{grid-template-columns:1fr}
+}
+</style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span>Darn</span><span class="brand-good">Good</span>
+    <span class="brand-sep">|</span>
+    <span class="brand-tag-wrap"><span class="brand-tag" id="brandTag">WordPress Maintenance</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#beyond">Beyond the build</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's talk</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">WordPress · Python Automation · AI-Powered Apps</div>
+    <h1>WordPress work<br>done <em>darn good.</em></h1>
+    <p class="hero-sub">Custom plugins, custom themes, and ongoing maintenance for businesses that can't afford for their site to be anything less than excellent.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">See what I do</a>
+      <a href="#about" class="btn-secondary">About me</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">30<span>+</span></div>
+        <div class="stat-label">Sites under management</div>
+      </div>
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">Long-term maintenance clients</div>
+      </div>
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">Years in the craft</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="section-tag">What I do</div>
+    <h2 class="section-title">Built for the long haul.</h2>
+    <p class="section-sub">From custom WordPress code to Python automation — I handle the technical work that actually matters to your business.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Custom themes</h3>
+        <p>Pixel-perfect WordPress themes built from the ground up. No bloated page builders — just clean, fast, maintainable code tailored to your brand.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2M14 13l2 2-2 2"/></svg>
+        </div>
+        <h3>Custom plugins</h3>
+        <p>Need WordPress to do something it doesn't do out of the box? I build plugins that extend your site's capabilities without the plugin soup.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Site maintenance</h3>
+        <p>Updates, backups, security monitoring, and performance optimization — handled proactively so you never have to think about it.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </div>
+        <h3>AI-powered apps</h3>
+        <p>Bringing AI into your workflow — custom tools, smart automations, and apps that actually solve your specific business problems.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Performance & speed</h3>
+        <p>Slow sites lose visitors and rankings. I audit and optimize core web vitals, caching, image delivery, and database performance.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3>Ongoing support</h3>
+        <p>A direct line when something breaks or when you need something new. No ticket queues, no mystery wait times — just responsive, reliable help.</p>
+      </div>
+    </div>
+    <div class="python-banner">
+      <div class="python-banner-left">
+        <div class="python-banner-tag">Python & automation</div>
+        <h3>Got a workflow that should be automated?</h3>
+        <p>Beyond WordPress, I build Python tools that handle the tedious, repetitive work your team shouldn't be doing manually — bulk data processing, contact management, system integrations, and more. If it's a workflow problem, it's probably a solvable one.</p>
+      </div>
+      <div class="python-banner-right">
+        <div class="product-pill"><span class="product-pill-dot green"></span>MailLedger — shipping soon</div>
+        <div class="product-pill"><span class="product-pill-dot"></span>Custom automation — available now</div>
+        <a href="#contact" class="banner-cta">Tell me about your workflow &#8599;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="clients" id="clients">
+  <div class="section-inner">
+    <div class="section-tag">Clients</div>
+    <h2 class="section-title">Trusted by organizations<br>doing work that matters.</h2>
+    <p class="section-sub">From regional media to law firms to creative agencies — a range of clients who needed a WordPress partner they could actually rely on.</p>
+    <div class="clients-grid">
+      <a href="https://phillymag.com" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Philadelphia Magazine</div>
+        <div class="client-type">Regional media &amp; publishing</div>
+        <div class="client-tag">Media</div>
+      </a>
+      <a href="https://thephiladelphiacitizen.org" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">The Philadelphia Citizen</div>
+        <div class="client-type">Civic journalism &amp; solutions media</div>
+        <div class="client-tag">Media</div>
+      </a>
+      <a href="https://slicecommunications.com" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Slice Communications</div>
+        <div class="client-type">PR &amp; digital marketing agency</div>
+        <div class="client-tag">Agency</div>
+      </a>
+      <a href="https://blueblazeassociates.com" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Blue Blaze Associates</div>
+        <div class="client-type">Marketing &amp; design agency</div>
+        <div class="client-tag">Agency</div>
+      </a>
+      <a href="https://visagecreative.com" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Visage Creative</div>
+        <div class="client-type">Visual marketing &amp; branding</div>
+        <div class="client-tag">Agency</div>
+      </a>
+      <a href="https://jarv.us" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Jarv.us</div>
+        <div class="client-type">Development &amp; design studio</div>
+        <div class="client-tag">Tech</div>
+      </a>
+      <a href="https://regerlaw.com" class="client-card" target="_blank" rel="noopener">
+        <div class="client-name">Reger Law</div>
+        <div class="client-type">Legal services</div>
+        <div class="client-tag">Legal</div>
+      </a>
+    </div>
+    <p class="clients-note">A deliberately small client list — because doing great work for a few beats doing okay work for many.</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="section-tag">About</div>
+        <h2 class="section-title">Developer first.<br>Problem solver always.</h2>
+        <div class="about-body">
+          <p>I started in web design, traded the mockups for a code editor, and never looked back. These days I specialize in WordPress development — the deep, custom kind that most agencies hand off to a junior or solve with a plugin that barely fits.</p>
+          <div class="about-highlight">"I build things that work exactly the way they're supposed to, and I maintain them like they're my own."</div>
+          <p>I work with a small number of clients on purpose. Fewer clients means more attention, faster responses, and work that actually gets done right. Currently I manage 30+ websites across two long-term clients — and I treat every one of those sites like it's the only one.</p>
+          <p>Beyond client work, I build my own software — apps, automation tools, and products I actually want to exist. It keeps me sharp, and it means I bring more to the table than someone who only ever builds to spec.</p>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="about-card">
+          <div class="about-card-num">30+</div>
+          <div class="about-card-label">WordPress sites actively maintained</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-num">100%</div>
+          <div class="about-card-label">Client retention on maintenance contracts</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-num">Custom</div>
+          <div class="about-card-label">Every theme and plugin — no cookie-cutter solutions</div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-num">Python</div>
+          <div class="about-card-label">Automation tools for real workflow problems</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach" id="approach">
+  <div class="section-inner">
+    <div class="section-tag">How I work</div>
+    <h2 class="section-title">No surprises. Just results.</h2>
+    <p class="section-sub">Simple, transparent, and focused on what actually moves the needle for your business.</p>
+    <div class="approach-list">
+      <div class="approach-item">
+        <div class="approach-num">01</div>
+        <div class="approach-content">
+          <h3>We talk first</h3>
+          <p>Before any code gets written, I want to understand what you actually need — not just what you think you need. A good conversation up front saves a lot of rework later.</p>
+        </div>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num">02</div>
+        <div class="approach-content">
+          <h3>I build it right</h3>
+          <p>Clean, documented, maintainable code. No shortcuts that come back to bite you six months later. Every project is built like someone else will have to work on it someday.</p>
+        </div>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num">03</div>
+        <div class="approach-content">
+          <h3>You stay in the loop</h3>
+          <p>No going dark for two weeks and emerging with a finished product. I check in, share progress, and make sure we're aligned before it's too late to change course.</p>
+        </div>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num">04</div>
+        <div class="approach-content">
+          <h3>I stick around</h3>
+          <p>The job isn't done at launch. I offer ongoing maintenance and support because I'd rather keep something running well than fix a crisis at 2am.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND THE BUILD -->
+<section class="beyond" id="beyond">
+  <div class="section-inner">
+    <div class="section-tag">Beyond the build</div>
+    <h2 class="section-title">There's more to the story.</h2>
+    <p class="section-sub">The best developers are curious about more than code. Here's what I make when I'm not building websites.</p>
+    <div class="beyond-grid">
+      <div class="beyond-card">
+        <div class="beyond-card-header">
+          <div class="beyond-badge">Original artwork</div>
+          <h3>Art & illustration</h3>
+          <p>Making things with my hands — or at least my stylus. Original artwork posted regularly on Instagram.</p>
+        </div>
+        <div class="beyond-card-footer">
+          <a href="https://instagram.com" class="beyond-link" target="_blank" rel="noopener">Follow along &#8599;</a>
+        </div>
+      </div>
+      <div class="beyond-card">
+        <div class="beyond-card-header">
+          <div class="beyond-badge">Philly trivia night</div>
+          <h3>Name That Jawn</h3>
+          <p>A Philly-based music and pop culture trivia night. Heavy on audio rounds, mini games, and printed puzzles — very much its own thing.</p>
+        </div>
+        <div class="beyond-card-footer">
+          <a href="https://instagram.com" class="beyond-link" target="_blank" rel="noopener">Find the next event &#8599;</a>
+        </div>
+      </div>
+      <div class="beyond-card">
+        <div class="beyond-card-header">
+          <div class="beyond-badge">Independent apps</div>
+          <h3>Apps I've built</h3>
+          <p>Building the apps I've always wanted to exist. Currently shipping to the App Store — more details below.</p>
+        </div>
+        <div class="beyond-card-footer">
+          <a href="#apps" class="beyond-link">See the apps &#8595;</a>
+        </div>
+      </div>
+    </div>
+    <div class="apps-row" id="apps">
+      <div class="app-card">
+        <div class="app-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+        </div>
+        <h3>Leagr</h3>
+        <p>Track sports and game leagues with ease. Built for the people who run their own brackets, pools, and rec leagues.</p>
+        <div class="app-status"><span class="status-dot"></span>Submitting to App Store</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C4512A" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h3>Name That Jawn — the app</h3>
+        <p>The trivia night, in your pocket. Big ideas in the works — stay tuned for something that goes way beyond a simple quiz app.</p>
+        <div class="app-status"><span class="status-dot soon"></span>In development</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-left">
+        <div class="section-tag">Get in touch</div>
+        <h2 class="section-title">Ready to work with someone who gives a darn?</h2>
+        <p class="section-sub">Whether you need a custom build, ongoing maintenance, or a workflow that runs itself — let's talk.</p>
+        <div class="contact-detail">
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="contact-item-text">
+              <strong>Email</strong>
+              hello@darngoodllc.com
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="contact-item-text">
+              <strong>Based in</strong>
+              Philadelphia, PA
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="contact-item-text">
+              <strong>Response time</strong>
+              Usually within one business day
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <form id="contactForm">
+          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
+          <input type="hidden" name="subject" value="New message from darngoodllc.com">
+          <input type="hidden" name="from_name" value="Darn Good LLC Website">
+          <input type="checkbox" name="botcheck" class="form-hp" tabindex="-1" autocomplete="off">
+
+          <div class="form-row">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name">
+          </div>
+          <div class="form-row">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" required autocomplete="email">
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell me a bit about what you're working on..." required></textarea>
+          </div>
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_YOUR_TURNSTILE_KEY" data-theme="light"></div>
+
+          <div class="form-status" id="formStatus"></div>
+          <button type="submit" class="form-submit" id="formSubmit">Send message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 <span>Darn Good LLC</span> · WordPress Development & Automation · Philadelphia, PA</p>
+</footer>
+
+<script>
+(function(){
+  var offerings = [
+    'WordPress Maintenance',
+    'Custom Themes',
+    'Custom Plugins',
+    'Python Automation',
+    'AI-Powered Apps',
+    'Performance & Speed'
+  ];
+  var idx = 0;
+  var tag = document.getElementById('brandTag');
+  if (tag) {
+    setInterval(function(){
+      tag.style.transform = 'translateY(-110%)';
+      tag.style.opacity = '0';
+      setTimeout(function(){
+        idx = (idx + 1) % offerings.length;
+        tag.textContent = offerings[idx];
+        tag.style.transition = 'none';
+        tag.style.transform = 'translateY(110%)';
+        tag.style.opacity = '0';
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            tag.style.transition = 'transform 0.38s cubic-bezier(0.4,0,0.2,1),opacity 0.38s ease';
+            tag.style.transform = 'translateY(0)';
+            tag.style.opacity = '1';
+          });
+        });
+      }, 400);
+    }, 3000);
+  }
+
+  var form = document.getElementById('contactForm');
+  var btn = document.getElementById('formSubmit');
+  var status = document.getElementById('formStatus');
+
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      status.style.display = 'none';
+      status.className = 'form-status';
+
+      var data = new FormData(form);
+      try {
+        var res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: data
+        });
+        var json = await res.json();
+        if (json.success) {
+          status.textContent = "Message sent — I'll be in touch soon.";
+          status.className = 'form-status success';
+          status.style.display = 'block';
+          form.reset();
+          if (window.turnstile) turnstile.reset();
+        } else {
+          throw new Error(json.message || 'Submission failed');
+        }
+      } catch(err) {
+        status.textContent = 'Something went wrong. Try emailing hello@darngoodllc.com directly.';
+        status.className = 'form-status error';
+        status.style.display = 'block';
+      }
+      btn.disabled = false;
+      btn.textContent = 'Send message';
+    });
+  }
+})();
+</script>
+</body>
+</html>
